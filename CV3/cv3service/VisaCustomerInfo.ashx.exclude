@@ -1,0 +1,115 @@
+﻿<%@ WebHandler Language="C#" Class="Recommendations" %>
+
+using System.Text;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Collections.Generic; 
+using System.Data;
+using System;  
+using System.Security.Cryptography;
+using System.IO;
+
+
+public class Recommendations : IHttpHandler {
+
+
+    
+    public HttpContext context;
+    public HttpRequest request;
+    public HttpResponse response;
+ 
+    public string PaymentInfo
+    {
+        get
+        {
+            return decryptPayload("EuA9Am@/#c{GxQOxZGqKB716wsJY6gGPdkFL$hS#", "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");
+
+        }
+    }
+ 
+        
+    public void handleRequest(string callback)
+    {
+        //writeRaw("this is a message");
+        writeJson(callback, PaymentInfo);
+    }
+    
+    public void ProcessRequest(HttpContext _context)
+    {
+        context = _context;
+        request = _context.Request;
+        response = _context.Response;
+        context.Response.ContentType = "application/json";
+        context.Response.ContentEncoding = Encoding.UTF8;
+        string callback = context.Request["callback"]; 
+        handleRequest(callback);
+
+    }
+
+    public void writeJson(string callback, object _object)
+    {
+        JavaScriptSerializer javaScriptSerializer = new JavaScriptSerializer();
+        string jsondata = javaScriptSerializer.Serialize(_object);
+        writeRaw(callback + "(" + jsondata + ")");
+    }
+
+    public void writeRaw(string text)
+    {
+        context.Response.Write(text);
+    }
+    
+    public bool IsReusable {
+        get {
+            return false;
+        }
+    }
+
+   
+
+        const int HMAC_LENGTH = 32, IV_LENGTH = 16;
+        public static String decryptPayload(String key, String wrappedKey, String payload)
+        {
+            return Encoding.UTF8.GetString(decrypt(decrypt(Encoding.UTF8.GetBytes(key),
+            Convert.FromBase64String(wrappedKey)), Convert.FromBase64String(payload)));
+        }
+
+	public static byte[] hash(byte[] key)
+        {
+            return (new SHA256Managed()).ComputeHash(key);
+        }
+
+        public static byte[] decrypt(byte[] key, byte[] data)
+        {
+            if (data == null || data.Length <= IV_LENGTH + HMAC_LENGTH)
+            {
+                throw new ArgumentException("Bad input data", "data");
+            }
+            byte[] hmac = new byte[HMAC_LENGTH];
+            Array.Copy(data, 0, hmac, 0, HMAC_LENGTH);
+            byte[] iv = new byte[IV_LENGTH];
+            Array.Copy(data, HMAC_LENGTH, iv, 0, IV_LENGTH);
+            byte[] payload = new byte[data.Length - HMAC_LENGTH - IV_LENGTH];
+            Array.Copy(data, HMAC_LENGTH + IV_LENGTH, payload, 0, payload.Length);
+            //if (byteArrayEquals(hmac, dohmac(key, byteArrayConcat(iv, payload)))) {
+            // TODO: Handle HMAC validation failure 
+            //}
+            Aes aes = new AesManaged();
+            aes.BlockSize = 128;
+            aes.KeySize = 256;
+            aes.Key = hash(key);
+            aes.IV = iv;
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Write);
+            cs.Write(payload, 0, payload.Length);
+            cs.FlushFinalBlock();
+            return ms.ToArray();
+        }
+
+}
+
+
+
+
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://service.cv3admin.com/CV3Data.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="https://service.cv3admin.com/CV3Data.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="https://service.cv3admin.com/CV3Data.xsd">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="testRequest">
+    <wsdl:part name="testparam1" type="xsd:string" />
+    <wsdl:part name="testparam2" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="testResponse">
+    <wsdl:part name="return" type="xsd:base64Binary" />
+  </wsdl:message>
+  <wsdl:message name="CV3DataRequest">
+    <wsdl:part name="data" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="CV3DataResponse">
+    <wsdl:part name="return" type="xsd:base64Binary" />
+  </wsdl:message>
+  <wsdl:portType name="CV3Data.xsdPortType">
+    <wsdl:operation name="test">
+      <wsdl:input message="tns:testRequest" />
+      <wsdl:output message="tns:testResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="CV3Data">
+      <wsdl:input message="tns:CV3DataRequest" />
+      <wsdl:output message="tns:CV3DataResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CV3Data.xsdBinding" type="tns:CV3Data.xsdPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="test">
+      <soap:operation soapAction="https://service.cv3admin.com/index.php/test" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://soapinterop.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://soapinterop.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CV3Data">
+      <soap:operation soapAction="https://service.cv3admin.com/index.php/CV3Data" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://soapinterop.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://soapinterop.org/" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CV3Data.xsd">
+    <wsdl:port name="CV3Data.xsdPort" binding="tns:CV3Data.xsdBinding">
+      <soap:address location="https://service.cv3admin.com/index.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
